@@ -1,0 +1,11 @@
+# DÉMO : switch non durci
+device: switch01
+type: switch
+management:
+  ssh: {enabled: true, version: 2, port: 22, idle_timeout: 300, allowed_sources: ["192.168.10.0/24"]}
+  telnet: {enabled: false}
+  ftp: {enabled: false}
+  http_admin: {enabled: false}
+  snmp: {enabled: true, version: 3, community: "${SNMP_COMMUNITY}"}
+logging: {enabled: true, server: 192.168.10.50}
+switch: {native_vlan: 1, unused_ports_shutdown: false}
