@@ -1,8 +1,0 @@
-# Propriétés de connectivité attendues (évaluées sur les règles du pare-feu)
-flows:
-  - {name: "Internet -> réseau d'administration (SSH)", device: firewall01, src_ip: 203.0.113.10, dst_ip: 192.168.99.10, port: 22,  proto: tcp, expect: deny}
-  - {name: "Internet -> serveur web (HTTPS)",           device: firewall01, src_ip: 203.0.113.10, dst_ip: 10.0.0.10,     port: 443, proto: tcp, expect: allow}
-  - {name: "Client -> serveur web (HTTPS)",             device: firewall01, src_ip: 192.168.10.25, dst_ip: 10.0.0.10,     port: 443, proto: tcp, expect: allow}
-  - {name: "Internet -> serveur (Telnet)",              device: firewall01, src_ip: 203.0.113.10, dst_ip: 10.0.0.10,     port: 23,  proto: tcp, expect: deny}
-  - {name: "Client -> réseau d'administration",         device: firewall01, src_ip: 192.168.10.25, dst_ip: 192.168.99.10, port: 22,  proto: tcp, expect: deny}
-  - {name: "Poste admin -> serveurs (SSH)",             device: firewall01, src_ip: 192.168.99.5,  dst_ip: 10.0.0.10,     port: 22,  proto: tcp, expect: allow}

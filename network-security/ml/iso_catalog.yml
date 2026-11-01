@@ -1,9 +1,0 @@
-# Contrôles ISO/IEC 27001:2022 (Annexe A) utilisés par le projet. Vérifier les intitulés dans votre exemplaire de la norme.
-A.5.15: Contrôle d'accès
-A.5.17: Informations d'authentification
-A.8.9:  Gestion de la configuration
-A.8.15: Journalisation
-A.8.20: Sécurité des réseaux
-A.8.21: Sécurité des services en réseau
-A.8.22: Cloisonnement des réseaux
-A.8.24: Utilisation de la cryptographie
