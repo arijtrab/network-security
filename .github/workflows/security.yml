@@ -1,0 +1,67 @@
+# Pipeline DevSecOps : Validation -> Scan -> Conformité (décision) -> Tests réseau -> Déploiement -> Rapport
+# Une étape en échec bloque automatiquement les suivantes : c'est la « barrière de sécurité ».
+name: Network Security Pipeline
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1. Checkout
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+
+      - name: 2a. Validation - yamllint
+        run: yamllint -c .yamllint configs/ policies/
+
+      - name: 2b. Validation - syntaxe et schéma
+        run: python scripts/validate.py
+
+      - name: 2c. Tests unitaires
+        run: pytest -q
+
+      - name: 3. Audit de sécurité
+        run: python scripts/security_check.py --out report.json
+
+      - name: 4. Conformité (DÉCISION PASS/FAIL)
+        run: python scripts/compliance.py --report report.json --out verdict.json
+
+      - name: 5. Tests réseau
+        run: python scripts/flow_test.py --out network_tests.json
+
+      - name: 6. Déploiement lab (branche main uniquement)
+        if: github.ref == 'refs/heads/main'
+        run: python scripts/deploy.py --verdict verdict.json --out deployment.json
+
+      - name: 7. Rapport (toujours exécuté)
+        if: always()
+        run: |
+          python ml/train.py > /dev/null 2>&1 || true
+          python ml/classify.py || true
+          python scripts/notify.py || true
+
+      - name: Sauvegarder les artefacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-report
+          path: |
+            report.md
+            report.json
+            verdict.json
+            network_tests.json
+            report_enriched.json
+            deployment.json
+          if-no-files-found: warn
+          retention-days: 90
