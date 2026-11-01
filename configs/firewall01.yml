@@ -1,4 +1,4 @@
-# Pare-feu périmétrique : configuration conforme (baseline)
+# DÉMO scénario 2 : SSH ouvert à 0.0.0.0/0 + Telnet activé
 device: firewall01
 type: firewall
 zones:
@@ -12,8 +12,8 @@ management:
     version: 2
     port: 22
     idle_timeout: 300
-    allowed_sources: ["192.168.10.0/24"]
-  telnet: {enabled: false}
+    allowed_sources: ["0.0.0.0/0"]
+  telnet: {enabled: true}
   ftp: {enabled: false}
   http_admin: {enabled: false}
   snmp: {enabled: true, version: 3, community: "${SNMP_COMMUNITY}"}
